@@ -143,6 +143,11 @@ resources:
         references:
           resource: Gateway
           path: Status.GatewayID
+      TargetConfiguration.Mcp.ApiGateway.RestApiId:
+        references:
+          resource: RestApi
+          service_name: apigateway
+          path: Status.ID
       # InputSchema and OutputSchema use the recursive SchemaDefinition type
       # which can't be directly represented in a CRD. We accept them as JSON
       # strings and marshal/unmarshal in hooks.

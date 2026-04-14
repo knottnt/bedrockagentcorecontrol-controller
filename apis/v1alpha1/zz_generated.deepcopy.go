@@ -32,6 +32,11 @@ func (in *APIGatewayTargetConfiguration) DeepCopyInto(out *APIGatewayTargetConfi
 		*out = new(string)
 		**out = **in
 	}
+	if in.RestAPIRef != nil {
+		in, out := &in.RestAPIRef, &out.RestAPIRef
+		*out = new(corev1alpha1.AWSResourceReferenceWrapper)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Stage != nil {
 		in, out := &in.Stage, &out.Stage
 		*out = new(string)

@@ -70,6 +70,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - apigateway.services.k8s.aws
+  resources:
+  - restapis
+  - restapis/status
+  verbs:
+  - get
+  - list
+- apiGroups:
   - bedrockagentcorecontrol.services.k8s.aws
   resources:
   - agentruntimeendpoints

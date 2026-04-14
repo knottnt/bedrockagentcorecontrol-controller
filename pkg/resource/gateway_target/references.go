@@ -23,12 +23,16 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	apigatewayapitypes "github.com/aws-controllers-k8s/apigateway-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackerr "github.com/aws-controllers-k8s/runtime/pkg/errors"
 	acktypes "github.com/aws-controllers-k8s/runtime/pkg/types"
 
 	svcapitypes "github.com/aws-controllers-k8s/bedrockagentcorecontrol-controller/apis/v1alpha1"
 )
+
+// +kubebuilder:rbac:groups=apigateway.services.k8s.aws,resources=restapis,verbs=get;list
+// +kubebuilder:rbac:groups=apigateway.services.k8s.aws,resources=restapis/status,verbs=get;list
 
 // ClearResolvedReferences removes any reference values that were made
 // concrete in the spec. It returns a copy of the input AWSResource which
@@ -39,6 +43,16 @@ func (rm *resourceManager) ClearResolvedReferences(res acktypes.AWSResource) ack
 
 	if ko.Spec.GatewayIdentifierRef != nil {
 		ko.Spec.GatewayIdentifier = nil
+	}
+
+	if ko.Spec.TargetConfiguration != nil {
+		if ko.Spec.TargetConfiguration.Mcp != nil {
+			if ko.Spec.TargetConfiguration.Mcp.APIGateway != nil {
+				if ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIRef != nil {
+					ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIID = nil
+				}
+			}
+		}
 	}
 
 	return &resource{ko}
@@ -66,6 +80,12 @@ func (rm *resourceManager) ResolveReferences(
 		resourceHasReferences = resourceHasReferences || fieldHasReferences
 	}
 
+	if fieldHasReferences, err := rm.resolveReferenceForTargetConfiguration_Mcp_APIGateway_RestAPIID(ctx, apiReader, ko); err != nil {
+		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
+	} else {
+		resourceHasReferences = resourceHasReferences || fieldHasReferences
+	}
+
 	return &resource{ko}, resourceHasReferences, err
 }
 
@@ -78,6 +98,16 @@ func validateReferenceFields(ko *svcapitypes.GatewayTarget) error {
 	}
 	if ko.Spec.GatewayIdentifierRef == nil && ko.Spec.GatewayIdentifier == nil {
 		return ackerr.ResourceReferenceOrIDRequiredFor("GatewayIdentifier", "GatewayIdentifierRef")
+	}
+
+	if ko.Spec.TargetConfiguration != nil {
+		if ko.Spec.TargetConfiguration.Mcp != nil {
+			if ko.Spec.TargetConfiguration.Mcp.APIGateway != nil {
+				if ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIRef != nil && ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIID != nil {
+					return ackerr.ResourceReferenceAndIDNotSupportedFor("TargetConfiguration.Mcp.APIGateway.RestAPIID", "TargetConfiguration.Mcp.APIGateway.RestAPIRef")
+				}
+			}
+		}
 	}
 	return nil
 }
@@ -161,6 +191,95 @@ func getReferencedResourceState_Gateway(
 			"Gateway",
 			namespace, name,
 			"Status.GatewayID")
+	}
+	return nil
+}
+
+// resolveReferenceForTargetConfiguration_Mcp_APIGateway_RestAPIID reads the resource referenced
+// from TargetConfiguration.Mcp.APIGateway.RestAPIRef field and sets the TargetConfiguration.Mcp.APIGateway.RestAPIID
+// from referenced resource. Returns a boolean indicating whether a reference
+// contains references, or an error
+func (rm *resourceManager) resolveReferenceForTargetConfiguration_Mcp_APIGateway_RestAPIID(
+	ctx context.Context,
+	apiReader client.Reader,
+	ko *svcapitypes.GatewayTarget,
+) (hasReferences bool, err error) {
+	if ko.Spec.TargetConfiguration != nil {
+		if ko.Spec.TargetConfiguration.Mcp != nil {
+			if ko.Spec.TargetConfiguration.Mcp.APIGateway != nil {
+				if ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIRef != nil && ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIRef.From != nil {
+					hasReferences = true
+					arr := ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIRef.From
+					if arr.Name == nil || *arr.Name == "" {
+						return hasReferences, fmt.Errorf("provided resource reference is nil or empty: TargetConfiguration.Mcp.APIGateway.RestAPIRef")
+					}
+					namespace := ko.ObjectMeta.GetNamespace()
+					if arr.Namespace != nil && *arr.Namespace != "" {
+						namespace = *arr.Namespace
+					}
+					obj := &apigatewayapitypes.RestApi{}
+					if err := getReferencedResourceState_RestApi(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
+						return hasReferences, err
+					}
+					ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIID = (*string)(obj.Status.ID)
+				}
+			}
+		}
+	}
+
+	return hasReferences, nil
+}
+
+// getReferencedResourceState_RestApi looks up whether a referenced resource
+// exists and is in a ACK.ResourceSynced=True state. If the referenced resource does exist and is
+// in a Synced state, returns nil, otherwise returns `ackerr.ResourceReferenceTerminalFor` or
+// `ResourceReferenceNotSyncedFor` depending on if the resource is in a Terminal state.
+func getReferencedResourceState_RestApi(
+	ctx context.Context,
+	apiReader client.Reader,
+	obj *apigatewayapitypes.RestApi,
+	name string, // the Kubernetes name of the referenced resource
+	namespace string, // the Kubernetes namespace of the referenced resource
+) error {
+	namespacedName := types.NamespacedName{
+		Namespace: namespace,
+		Name:      name,
+	}
+	err := apiReader.Get(ctx, namespacedName, obj)
+	if err != nil {
+		return err
+	}
+	var refResourceTerminal bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeTerminal &&
+			cond.Status == corev1.ConditionTrue {
+			return ackerr.ResourceReferenceTerminalFor(
+				"RestApi",
+				namespace, name)
+		}
+	}
+	if refResourceTerminal {
+		return ackerr.ResourceReferenceTerminalFor(
+			"RestApi",
+			namespace, name)
+	}
+	var refResourceSynced bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeResourceSynced &&
+			cond.Status == corev1.ConditionTrue {
+			refResourceSynced = true
+		}
+	}
+	if !refResourceSynced {
+		return ackerr.ResourceReferenceNotSyncedFor(
+			"RestApi",
+			namespace, name)
+	}
+	if obj.Status.ID == nil {
+		return ackerr.ResourceReferenceMissingTargetFieldFor(
+			"RestApi",
+			namespace, name,
+			"Status.ID")
 	}
 	return nil
 }
