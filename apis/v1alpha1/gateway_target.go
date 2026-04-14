@@ -33,8 +33,8 @@ type GatewayTargetSpec struct {
 	// The identifier of the gateway to create a target for.
 	//
 	// Regex Pattern: `^([0-9a-z][-]?){1,100}-[0-9a-z]{10}$`
-	// +kubebuilder:validation:Required
-	GatewayIdentifier *string `json:"gatewayIdentifier"`
+	GatewayIdentifier    *string                                  `json:"gatewayIdentifier,omitempty"`
+	GatewayIdentifierRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"gatewayIdentifierRef,omitempty"`
 	// Optional configuration for HTTP header and query parameter propagation to
 	// and from the gateway target.
 	MetadataConfiguration *MetadataConfiguration `json:"metadataConfiguration,omitempty"`

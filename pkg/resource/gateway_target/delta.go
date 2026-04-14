@@ -63,6 +63,9 @@ func newResourceDelta(
 			delta.Add("Spec.GatewayIdentifier", a.ko.Spec.GatewayIdentifier, b.ko.Spec.GatewayIdentifier)
 		}
 	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.GatewayIdentifierRef, b.ko.Spec.GatewayIdentifierRef) {
+		delta.Add("Spec.GatewayIdentifierRef", a.ko.Spec.GatewayIdentifierRef, b.ko.Spec.GatewayIdentifierRef)
+	}
 	if ackcompare.HasNilDifference(a.ko.Spec.MetadataConfiguration, b.ko.Spec.MetadataConfiguration) {
 		delta.Add("Spec.MetadataConfiguration", a.ko.Spec.MetadataConfiguration, b.ko.Spec.MetadataConfiguration)
 	} else if a.ko.Spec.MetadataConfiguration != nil && b.ko.Spec.MetadataConfiguration != nil {

@@ -205,179 +205,191 @@ func (rm *resourceManager) sdkFind(
 			f9f0 := resp.TargetConfiguration.(*svcsdktypes.TargetConfigurationMemberMcp)
 			if f9f0 != nil {
 				f9f0f0 := &svcapitypes.McpTargetConfiguration{}
-				if f9f0.Value.ApiGateway != nil {
-					f9f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
-					if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration != nil {
-						f9f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters != nil {
-							f9f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
-							for _, f9f0f0f0f0f0iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters {
-								f9f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
-								if f9f0f0f0f0f0iter.FilterPath != nil {
-									f9f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0iter.FilterPath
-								}
-								if f9f0f0f0f0f0iter.Methods != nil {
-									f9f0f0f0f0f0elemf1 := []*string{}
-									for _, f9f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0iter.Methods {
-										var f9f0f0f0f0f0elemf1elem *string
-										f9f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0elemf1iter))
-										f9f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0elemf1, f9f0f0f0f0f0elemf1elem)
+				switch f9f0.Value.(type) {
+				case *svcsdktypes.McpTargetConfigurationMemberApiGateway:
+					f9f0f0f0 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberApiGateway)
+					if f9f0f0f0 != nil {
+						f9f0f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
+						if f9f0f0f0.Value.ApiGatewayToolConfiguration != nil {
+							f9f0f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters != nil {
+								f9f0f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
+								for _, f9f0f0f0f0f0f0iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters {
+									f9f0f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
+									if f9f0f0f0f0f0f0iter.FilterPath != nil {
+										f9f0f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0f0iter.FilterPath
 									}
-									f9f0f0f0f0f0elem.Methods = f9f0f0f0f0f0elemf1
-								}
-								f9f0f0f0f0f0 = append(f9f0f0f0f0f0, f9f0f0f0f0f0elem)
-							}
-							f9f0f0f0f0.ToolFilters = f9f0f0f0f0f0
-						}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides != nil {
-							f9f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
-							for _, f9f0f0f0f0f1iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides {
-								f9f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
-								if f9f0f0f0f0f1iter.Description != nil {
-									f9f0f0f0f0f1elem.Description = f9f0f0f0f0f1iter.Description
-								}
-								if f9f0f0f0f0f1iter.Method != "" {
-									f9f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f1iter.Method))
-								}
-								if f9f0f0f0f0f1iter.Name != nil {
-									f9f0f0f0f0f1elem.Name = f9f0f0f0f0f1iter.Name
-								}
-								if f9f0f0f0f0f1iter.Path != nil {
-									f9f0f0f0f0f1elem.Path = f9f0f0f0f0f1iter.Path
-								}
-								f9f0f0f0f0f1 = append(f9f0f0f0f0f1, f9f0f0f0f0f1elem)
-							}
-							f9f0f0f0f0.ToolOverrides = f9f0f0f0f0f1
-						}
-						f9f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0
-					}
-					if f9f0.Value.ApiGateway.RestApiId != nil {
-						f9f0f0f0.RestAPIID = f9f0.Value.ApiGateway.RestApiId
-					}
-					if f9f0.Value.ApiGateway.Stage != nil {
-						f9f0f0f0.Stage = f9f0.Value.ApiGateway.Stage
-					}
-					f9f0f0.APIGateway = f9f0f0f0
-				}
-				if f9f0.Value.Lambda != nil {
-					f9f0f0f1 := &svcapitypes.McpLambdaTargetConfiguration{}
-					if f9f0.Value.Lambda.LambdaArn != nil {
-						f9f0f0f1.LambdaARN = f9f0.Value.Lambda.LambdaArn
-					}
-					if f9f0.Value.Lambda.ToolSchema != nil {
-						f9f0f0f1f1 := &svcapitypes.ToolSchema{}
-						switch f9f0.Value.Lambda.ToolSchema.(type) {
-						case *svcsdktypes.ToolSchemaMemberInlinePayload:
-							f9f0f0f1f1f0 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
-							if f9f0f0f1f1f0 != nil {
-								f9f0f0f1f1f0f0 := []*svcapitypes.ToolDefinition{}
-								for _, f9f0f0f1f1f0f0iter := range f9f0f0f1f1f0.Value {
-									f9f0f0f1f1f0f0elem := &svcapitypes.ToolDefinition{}
-									if f9f0f0f1f1f0f0iter.Description != nil {
-										f9f0f0f1f1f0f0elem.Description = f9f0f0f1f1f0f0iter.Description
+									if f9f0f0f0f0f0f0iter.Methods != nil {
+										f9f0f0f0f0f0f0elemf1 := []*string{}
+										for _, f9f0f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0f0iter.Methods {
+											var f9f0f0f0f0f0f0elemf1elem *string
+											f9f0f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0f0elemf1iter))
+											f9f0f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0f0elemf1, f9f0f0f0f0f0f0elemf1elem)
+										}
+										f9f0f0f0f0f0f0elem.Methods = f9f0f0f0f0f0f0elemf1
 									}
-									if f9f0f0f1f1f0f0iter.InputSchema != nil {
-										f9f0f0f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.InputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf1.Description = f9f0f0f1f1f0f0iter.InputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.InputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f0f0iter.InputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.InputSchema = f9f0f0f1f1f0f0elemf1
-									}
-									if f9f0f0f1f1f0f0iter.Name != nil {
-										f9f0f0f1f1f0f0elem.Name = f9f0f0f1f1f0f0iter.Name
-									}
-									if f9f0f0f1f1f0f0iter.OutputSchema != nil {
-										f9f0f0f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf3.Description = f9f0f0f1f1f0f0iter.OutputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.OutputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f0f0iter.OutputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.OutputSchema = f9f0f0f1f1f0f0elemf3
-									}
-									f9f0f0f1f1f0f0 = append(f9f0f0f1f1f0f0, f9f0f0f1f1f0f0elem)
+									f9f0f0f0f0f0f0 = append(f9f0f0f0f0f0f0, f9f0f0f0f0f0f0elem)
 								}
-								f9f0f0f1f1.InlinePayload = f9f0f0f1f1f0f0
+								f9f0f0f0f0f0.ToolFilters = f9f0f0f0f0f0f0
 							}
-						case *svcsdktypes.ToolSchemaMemberS3:
-							f9f0f0f1f1f1 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
-							if f9f0f0f1f1f1 != nil {
-								f9f0f0f1f1f1f1 := &svcapitypes.S3Configuration{}
-								if f9f0f0f1f1f1.Value.BucketOwnerAccountId != nil {
-									f9f0f0f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1.Value.BucketOwnerAccountId
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides != nil {
+								f9f0f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
+								for _, f9f0f0f0f0f0f1iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides {
+									f9f0f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
+									if f9f0f0f0f0f0f1iter.Description != nil {
+										f9f0f0f0f0f0f1elem.Description = f9f0f0f0f0f0f1iter.Description
+									}
+									if f9f0f0f0f0f0f1iter.Method != "" {
+										f9f0f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f0f1iter.Method))
+									}
+									if f9f0f0f0f0f0f1iter.Name != nil {
+										f9f0f0f0f0f0f1elem.Name = f9f0f0f0f0f0f1iter.Name
+									}
+									if f9f0f0f0f0f0f1iter.Path != nil {
+										f9f0f0f0f0f0f1elem.Path = f9f0f0f0f0f0f1iter.Path
+									}
+									f9f0f0f0f0f0f1 = append(f9f0f0f0f0f0f1, f9f0f0f0f0f0f1elem)
 								}
-								if f9f0f0f1f1f1.Value.Uri != nil {
-									f9f0f0f1f1f1f1.URI = f9f0f0f1f1f1.Value.Uri
+								f9f0f0f0f0f0.ToolOverrides = f9f0f0f0f0f0f1
+							}
+							f9f0f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0f0
+						}
+						if f9f0f0f0.Value.RestApiId != nil {
+							f9f0f0f0f0.RestAPIID = f9f0f0f0.Value.RestApiId
+						}
+						if f9f0f0f0.Value.Stage != nil {
+							f9f0f0f0f0.Stage = f9f0f0f0.Value.Stage
+						}
+						f9f0f0.APIGateway = f9f0f0f0f0
+					}
+				case *svcsdktypes.McpTargetConfigurationMemberLambda:
+					f9f0f0f1 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberLambda)
+					if f9f0f0f1 != nil {
+						f9f0f0f1f1 := &svcapitypes.McpLambdaTargetConfiguration{}
+						if f9f0f0f1.Value.LambdaArn != nil {
+							f9f0f0f1f1.LambdaARN = f9f0f0f1.Value.LambdaArn
+						}
+						if f9f0f0f1.Value.ToolSchema != nil {
+							f9f0f0f1f1f1 := &svcapitypes.ToolSchema{}
+							switch f9f0f0f1.Value.ToolSchema.(type) {
+							case *svcsdktypes.ToolSchemaMemberInlinePayload:
+								f9f0f0f1f1f1f0 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
+								if f9f0f0f1f1f1f0 != nil {
+									f9f0f0f1f1f1f0f0 := []*svcapitypes.ToolDefinition{}
+									for _, f9f0f0f1f1f1f0f0iter := range f9f0f0f1f1f1f0.Value {
+										f9f0f0f1f1f1f0f0elem := &svcapitypes.ToolDefinition{}
+										if f9f0f0f1f1f1f0f0iter.Description != nil {
+											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
+										}
+										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
+										}
+										if f9f0f0f1f1f1f0f0iter.Name != nil {
+											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
+										}
+										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
+										}
+										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
+									}
+									f9f0f0f1f1f1.InlinePayload = f9f0f0f1f1f1f0f0
 								}
-								f9f0f0f1f1.S3 = f9f0f0f1f1f1f1
+							case *svcsdktypes.ToolSchemaMemberS3:
+								f9f0f0f1f1f1f1 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
+								if f9f0f0f1f1f1f1 != nil {
+									f9f0f0f1f1f1f1f1 := &svcapitypes.S3Configuration{}
+									if f9f0f0f1f1f1f1.Value.BucketOwnerAccountId != nil {
+										f9f0f0f1f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1f1.Value.BucketOwnerAccountId
+									}
+									if f9f0f0f1f1f1f1.Value.Uri != nil {
+										f9f0f0f1f1f1f1f1.URI = f9f0f0f1f1f1f1.Value.Uri
+									}
+									f9f0f0f1f1f1.S3 = f9f0f0f1f1f1f1f1
+								}
 							}
+							f9f0f0f1f1.ToolSchema = f9f0f0f1f1f1
 						}
-						f9f0f0f1.ToolSchema = f9f0f0f1f1
+						f9f0f0.Lambda = f9f0f0f1f1
 					}
-					f9f0f0.Lambda = f9f0f0f1
-				}
-				if f9f0.Value.McpServer != nil {
-					f9f0f0f2 := &svcapitypes.McpServerTargetConfiguration{}
-					if f9f0.Value.McpServer.Endpoint != nil {
-						f9f0f0f2.Endpoint = f9f0.Value.McpServer.Endpoint
+				case *svcsdktypes.McpTargetConfigurationMemberMcpServer:
+					f9f0f0f2 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberMcpServer)
+					if f9f0f0f2 != nil {
+						f9f0f0f2f2 := &svcapitypes.McpServerTargetConfiguration{}
+						if f9f0f0f2.Value.Endpoint != nil {
+							f9f0f0f2f2.Endpoint = f9f0f0f2.Value.Endpoint
+						}
+						f9f0f0.McpServer = f9f0f0f2f2
 					}
-					f9f0f0.McpServer = f9f0f0f2
-				}
-				if f9f0.Value.OpenApiSchema != nil {
-					f9f0f0f3 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.OpenApiSchema.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f3f0 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f3f0 != nil {
-							f9f0f0f3.InlinePayload = &f9f0f0f3f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f3f1 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f3f1 != nil {
-							f9f0f0f3f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f3f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f3f1f1.BucketOwnerAccountID = f9f0f0f3f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberOpenApiSchema:
+					f9f0f0f3 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberOpenApiSchema)
+					if f9f0f0f3 != nil {
+						f9f0f0f3f3 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f3.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f3f3f0 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f3f3f0 != nil {
+								f9f0f0f3f3.InlinePayload = &f9f0f0f3f3f0.Value
 							}
-							if f9f0f0f3f1.Value.Uri != nil {
-								f9f0f0f3f1f1.URI = f9f0f0f3f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f3f3f1 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f3f3f1 != nil {
+								f9f0f0f3f3f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f3f3f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f3f3f1f1.BucketOwnerAccountID = f9f0f0f3f3f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f3f3f1.Value.Uri != nil {
+									f9f0f0f3f3f1f1.URI = f9f0f0f3f3f1.Value.Uri
+								}
+								f9f0f0f3f3.S3 = f9f0f0f3f3f1f1
 							}
-							f9f0f0f3.S3 = f9f0f0f3f1f1
 						}
+						f9f0f0.OpenAPISchema = f9f0f0f3f3
 					}
-					f9f0f0.OpenAPISchema = f9f0f0f3
-				}
-				if f9f0.Value.SmithyModel != nil {
-					f9f0f0f4 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.SmithyModel.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f4f0 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f4f0 != nil {
-							f9f0f0f4.InlinePayload = &f9f0f0f4f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f4f1 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f4f1 != nil {
-							f9f0f0f4f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f4f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f4f1f1.BucketOwnerAccountID = f9f0f0f4f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberSmithyModel:
+					f9f0f0f4 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberSmithyModel)
+					if f9f0f0f4 != nil {
+						f9f0f0f4f4 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f4.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f4f4f0 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f4f4f0 != nil {
+								f9f0f0f4f4.InlinePayload = &f9f0f0f4f4f0.Value
 							}
-							if f9f0f0f4f1.Value.Uri != nil {
-								f9f0f0f4f1f1.URI = f9f0f0f4f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f4f4f1 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f4f4f1 != nil {
+								f9f0f0f4f4f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f4f4f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f4f4f1f1.BucketOwnerAccountID = f9f0f0f4f4f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f4f4f1.Value.Uri != nil {
+									f9f0f0f4f4f1f1.URI = f9f0f0f4f4f1.Value.Uri
+								}
+								f9f0f0f4f4.S3 = f9f0f0f4f4f1f1
 							}
-							f9f0f0f4.S3 = f9f0f0f4f1f1
 						}
+						f9f0f0.SmithyModel = f9f0f0f4f4
 					}
-					f9f0f0.SmithyModel = f9f0f0f4
 				}
 				f9.Mcp = f9f0f0
 			}
@@ -571,179 +583,191 @@ func (rm *resourceManager) sdkCreate(
 			f9f0 := resp.TargetConfiguration.(*svcsdktypes.TargetConfigurationMemberMcp)
 			if f9f0 != nil {
 				f9f0f0 := &svcapitypes.McpTargetConfiguration{}
-				if f9f0.Value.ApiGateway != nil {
-					f9f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
-					if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration != nil {
-						f9f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters != nil {
-							f9f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
-							for _, f9f0f0f0f0f0iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters {
-								f9f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
-								if f9f0f0f0f0f0iter.FilterPath != nil {
-									f9f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0iter.FilterPath
-								}
-								if f9f0f0f0f0f0iter.Methods != nil {
-									f9f0f0f0f0f0elemf1 := []*string{}
-									for _, f9f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0iter.Methods {
-										var f9f0f0f0f0f0elemf1elem *string
-										f9f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0elemf1iter))
-										f9f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0elemf1, f9f0f0f0f0f0elemf1elem)
+				switch f9f0.Value.(type) {
+				case *svcsdktypes.McpTargetConfigurationMemberApiGateway:
+					f9f0f0f0 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberApiGateway)
+					if f9f0f0f0 != nil {
+						f9f0f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
+						if f9f0f0f0.Value.ApiGatewayToolConfiguration != nil {
+							f9f0f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters != nil {
+								f9f0f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
+								for _, f9f0f0f0f0f0f0iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters {
+									f9f0f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
+									if f9f0f0f0f0f0f0iter.FilterPath != nil {
+										f9f0f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0f0iter.FilterPath
 									}
-									f9f0f0f0f0f0elem.Methods = f9f0f0f0f0f0elemf1
-								}
-								f9f0f0f0f0f0 = append(f9f0f0f0f0f0, f9f0f0f0f0f0elem)
-							}
-							f9f0f0f0f0.ToolFilters = f9f0f0f0f0f0
-						}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides != nil {
-							f9f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
-							for _, f9f0f0f0f0f1iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides {
-								f9f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
-								if f9f0f0f0f0f1iter.Description != nil {
-									f9f0f0f0f0f1elem.Description = f9f0f0f0f0f1iter.Description
-								}
-								if f9f0f0f0f0f1iter.Method != "" {
-									f9f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f1iter.Method))
-								}
-								if f9f0f0f0f0f1iter.Name != nil {
-									f9f0f0f0f0f1elem.Name = f9f0f0f0f0f1iter.Name
-								}
-								if f9f0f0f0f0f1iter.Path != nil {
-									f9f0f0f0f0f1elem.Path = f9f0f0f0f0f1iter.Path
-								}
-								f9f0f0f0f0f1 = append(f9f0f0f0f0f1, f9f0f0f0f0f1elem)
-							}
-							f9f0f0f0f0.ToolOverrides = f9f0f0f0f0f1
-						}
-						f9f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0
-					}
-					if f9f0.Value.ApiGateway.RestApiId != nil {
-						f9f0f0f0.RestAPIID = f9f0.Value.ApiGateway.RestApiId
-					}
-					if f9f0.Value.ApiGateway.Stage != nil {
-						f9f0f0f0.Stage = f9f0.Value.ApiGateway.Stage
-					}
-					f9f0f0.APIGateway = f9f0f0f0
-				}
-				if f9f0.Value.Lambda != nil {
-					f9f0f0f1 := &svcapitypes.McpLambdaTargetConfiguration{}
-					if f9f0.Value.Lambda.LambdaArn != nil {
-						f9f0f0f1.LambdaARN = f9f0.Value.Lambda.LambdaArn
-					}
-					if f9f0.Value.Lambda.ToolSchema != nil {
-						f9f0f0f1f1 := &svcapitypes.ToolSchema{}
-						switch f9f0.Value.Lambda.ToolSchema.(type) {
-						case *svcsdktypes.ToolSchemaMemberInlinePayload:
-							f9f0f0f1f1f0 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
-							if f9f0f0f1f1f0 != nil {
-								f9f0f0f1f1f0f0 := []*svcapitypes.ToolDefinition{}
-								for _, f9f0f0f1f1f0f0iter := range f9f0f0f1f1f0.Value {
-									f9f0f0f1f1f0f0elem := &svcapitypes.ToolDefinition{}
-									if f9f0f0f1f1f0f0iter.Description != nil {
-										f9f0f0f1f1f0f0elem.Description = f9f0f0f1f1f0f0iter.Description
+									if f9f0f0f0f0f0f0iter.Methods != nil {
+										f9f0f0f0f0f0f0elemf1 := []*string{}
+										for _, f9f0f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0f0iter.Methods {
+											var f9f0f0f0f0f0f0elemf1elem *string
+											f9f0f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0f0elemf1iter))
+											f9f0f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0f0elemf1, f9f0f0f0f0f0f0elemf1elem)
+										}
+										f9f0f0f0f0f0f0elem.Methods = f9f0f0f0f0f0f0elemf1
 									}
-									if f9f0f0f1f1f0f0iter.InputSchema != nil {
-										f9f0f0f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.InputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf1.Description = f9f0f0f1f1f0f0iter.InputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.InputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f0f0iter.InputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.InputSchema = f9f0f0f1f1f0f0elemf1
-									}
-									if f9f0f0f1f1f0f0iter.Name != nil {
-										f9f0f0f1f1f0f0elem.Name = f9f0f0f1f1f0f0iter.Name
-									}
-									if f9f0f0f1f1f0f0iter.OutputSchema != nil {
-										f9f0f0f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf3.Description = f9f0f0f1f1f0f0iter.OutputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.OutputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f0f0iter.OutputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.OutputSchema = f9f0f0f1f1f0f0elemf3
-									}
-									f9f0f0f1f1f0f0 = append(f9f0f0f1f1f0f0, f9f0f0f1f1f0f0elem)
+									f9f0f0f0f0f0f0 = append(f9f0f0f0f0f0f0, f9f0f0f0f0f0f0elem)
 								}
-								f9f0f0f1f1.InlinePayload = f9f0f0f1f1f0f0
+								f9f0f0f0f0f0.ToolFilters = f9f0f0f0f0f0f0
 							}
-						case *svcsdktypes.ToolSchemaMemberS3:
-							f9f0f0f1f1f1 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
-							if f9f0f0f1f1f1 != nil {
-								f9f0f0f1f1f1f1 := &svcapitypes.S3Configuration{}
-								if f9f0f0f1f1f1.Value.BucketOwnerAccountId != nil {
-									f9f0f0f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1.Value.BucketOwnerAccountId
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides != nil {
+								f9f0f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
+								for _, f9f0f0f0f0f0f1iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides {
+									f9f0f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
+									if f9f0f0f0f0f0f1iter.Description != nil {
+										f9f0f0f0f0f0f1elem.Description = f9f0f0f0f0f0f1iter.Description
+									}
+									if f9f0f0f0f0f0f1iter.Method != "" {
+										f9f0f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f0f1iter.Method))
+									}
+									if f9f0f0f0f0f0f1iter.Name != nil {
+										f9f0f0f0f0f0f1elem.Name = f9f0f0f0f0f0f1iter.Name
+									}
+									if f9f0f0f0f0f0f1iter.Path != nil {
+										f9f0f0f0f0f0f1elem.Path = f9f0f0f0f0f0f1iter.Path
+									}
+									f9f0f0f0f0f0f1 = append(f9f0f0f0f0f0f1, f9f0f0f0f0f0f1elem)
 								}
-								if f9f0f0f1f1f1.Value.Uri != nil {
-									f9f0f0f1f1f1f1.URI = f9f0f0f1f1f1.Value.Uri
+								f9f0f0f0f0f0.ToolOverrides = f9f0f0f0f0f0f1
+							}
+							f9f0f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0f0
+						}
+						if f9f0f0f0.Value.RestApiId != nil {
+							f9f0f0f0f0.RestAPIID = f9f0f0f0.Value.RestApiId
+						}
+						if f9f0f0f0.Value.Stage != nil {
+							f9f0f0f0f0.Stage = f9f0f0f0.Value.Stage
+						}
+						f9f0f0.APIGateway = f9f0f0f0f0
+					}
+				case *svcsdktypes.McpTargetConfigurationMemberLambda:
+					f9f0f0f1 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberLambda)
+					if f9f0f0f1 != nil {
+						f9f0f0f1f1 := &svcapitypes.McpLambdaTargetConfiguration{}
+						if f9f0f0f1.Value.LambdaArn != nil {
+							f9f0f0f1f1.LambdaARN = f9f0f0f1.Value.LambdaArn
+						}
+						if f9f0f0f1.Value.ToolSchema != nil {
+							f9f0f0f1f1f1 := &svcapitypes.ToolSchema{}
+							switch f9f0f0f1.Value.ToolSchema.(type) {
+							case *svcsdktypes.ToolSchemaMemberInlinePayload:
+								f9f0f0f1f1f1f0 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
+								if f9f0f0f1f1f1f0 != nil {
+									f9f0f0f1f1f1f0f0 := []*svcapitypes.ToolDefinition{}
+									for _, f9f0f0f1f1f1f0f0iter := range f9f0f0f1f1f1f0.Value {
+										f9f0f0f1f1f1f0f0elem := &svcapitypes.ToolDefinition{}
+										if f9f0f0f1f1f1f0f0iter.Description != nil {
+											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
+										}
+										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
+										}
+										if f9f0f0f1f1f1f0f0iter.Name != nil {
+											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
+										}
+										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
+										}
+										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
+									}
+									f9f0f0f1f1f1.InlinePayload = f9f0f0f1f1f1f0f0
 								}
-								f9f0f0f1f1.S3 = f9f0f0f1f1f1f1
+							case *svcsdktypes.ToolSchemaMemberS3:
+								f9f0f0f1f1f1f1 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
+								if f9f0f0f1f1f1f1 != nil {
+									f9f0f0f1f1f1f1f1 := &svcapitypes.S3Configuration{}
+									if f9f0f0f1f1f1f1.Value.BucketOwnerAccountId != nil {
+										f9f0f0f1f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1f1.Value.BucketOwnerAccountId
+									}
+									if f9f0f0f1f1f1f1.Value.Uri != nil {
+										f9f0f0f1f1f1f1f1.URI = f9f0f0f1f1f1f1.Value.Uri
+									}
+									f9f0f0f1f1f1.S3 = f9f0f0f1f1f1f1f1
+								}
 							}
+							f9f0f0f1f1.ToolSchema = f9f0f0f1f1f1
 						}
-						f9f0f0f1.ToolSchema = f9f0f0f1f1
+						f9f0f0.Lambda = f9f0f0f1f1
 					}
-					f9f0f0.Lambda = f9f0f0f1
-				}
-				if f9f0.Value.McpServer != nil {
-					f9f0f0f2 := &svcapitypes.McpServerTargetConfiguration{}
-					if f9f0.Value.McpServer.Endpoint != nil {
-						f9f0f0f2.Endpoint = f9f0.Value.McpServer.Endpoint
+				case *svcsdktypes.McpTargetConfigurationMemberMcpServer:
+					f9f0f0f2 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberMcpServer)
+					if f9f0f0f2 != nil {
+						f9f0f0f2f2 := &svcapitypes.McpServerTargetConfiguration{}
+						if f9f0f0f2.Value.Endpoint != nil {
+							f9f0f0f2f2.Endpoint = f9f0f0f2.Value.Endpoint
+						}
+						f9f0f0.McpServer = f9f0f0f2f2
 					}
-					f9f0f0.McpServer = f9f0f0f2
-				}
-				if f9f0.Value.OpenApiSchema != nil {
-					f9f0f0f3 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.OpenApiSchema.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f3f0 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f3f0 != nil {
-							f9f0f0f3.InlinePayload = &f9f0f0f3f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f3f1 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f3f1 != nil {
-							f9f0f0f3f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f3f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f3f1f1.BucketOwnerAccountID = f9f0f0f3f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberOpenApiSchema:
+					f9f0f0f3 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberOpenApiSchema)
+					if f9f0f0f3 != nil {
+						f9f0f0f3f3 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f3.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f3f3f0 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f3f3f0 != nil {
+								f9f0f0f3f3.InlinePayload = &f9f0f0f3f3f0.Value
 							}
-							if f9f0f0f3f1.Value.Uri != nil {
-								f9f0f0f3f1f1.URI = f9f0f0f3f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f3f3f1 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f3f3f1 != nil {
+								f9f0f0f3f3f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f3f3f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f3f3f1f1.BucketOwnerAccountID = f9f0f0f3f3f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f3f3f1.Value.Uri != nil {
+									f9f0f0f3f3f1f1.URI = f9f0f0f3f3f1.Value.Uri
+								}
+								f9f0f0f3f3.S3 = f9f0f0f3f3f1f1
 							}
-							f9f0f0f3.S3 = f9f0f0f3f1f1
 						}
+						f9f0f0.OpenAPISchema = f9f0f0f3f3
 					}
-					f9f0f0.OpenAPISchema = f9f0f0f3
-				}
-				if f9f0.Value.SmithyModel != nil {
-					f9f0f0f4 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.SmithyModel.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f4f0 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f4f0 != nil {
-							f9f0f0f4.InlinePayload = &f9f0f0f4f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f4f1 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f4f1 != nil {
-							f9f0f0f4f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f4f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f4f1f1.BucketOwnerAccountID = f9f0f0f4f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberSmithyModel:
+					f9f0f0f4 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberSmithyModel)
+					if f9f0f0f4 != nil {
+						f9f0f0f4f4 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f4.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f4f4f0 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f4f4f0 != nil {
+								f9f0f0f4f4.InlinePayload = &f9f0f0f4f4f0.Value
 							}
-							if f9f0f0f4f1.Value.Uri != nil {
-								f9f0f0f4f1f1.URI = f9f0f0f4f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f4f4f1 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f4f4f1 != nil {
+								f9f0f0f4f4f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f4f4f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f4f4f1f1.BucketOwnerAccountID = f9f0f0f4f4f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f4f4f1.Value.Uri != nil {
+									f9f0f0f4f4f1f1.URI = f9f0f0f4f4f1.Value.Uri
+								}
+								f9f0f0f4f4.S3 = f9f0f0f4f4f1f1
 							}
-							f9f0f0f4.S3 = f9f0f0f4f1f1
 						}
+						f9f0f0.SmithyModel = f9f0f0f4f4
 					}
-					f9f0f0.SmithyModel = f9f0f0f4
 				}
 				f9.Mcp = f9f0f0
 			}
@@ -1055,7 +1079,7 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f6f0f3 = f6f0f3f1Parent
 					isInterfaceSet = true
 				}
-				f6f0f3Parent.Value = *f6f0f3
+				f6f0f3Parent.Value = f6f0f3
 				f6f0 = f6f0f3Parent
 				isInterfaceSet = true
 			}
@@ -1091,11 +1115,11 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f6f0f4 = f6f0f4f1Parent
 					isInterfaceSet = true
 				}
-				f6f0f4Parent.Value = *f6f0f4
+				f6f0f4Parent.Value = f6f0f4
 				f6f0 = f6f0f4Parent
 				isInterfaceSet = true
 			}
-			f6f0Parent.Value = *f6f0
+			f6f0Parent.Value = f6f0
 			f6 = f6f0Parent
 			isInterfaceSet = true
 		}
@@ -1249,179 +1273,191 @@ func (rm *resourceManager) sdkUpdate(
 			f9f0 := resp.TargetConfiguration.(*svcsdktypes.TargetConfigurationMemberMcp)
 			if f9f0 != nil {
 				f9f0f0 := &svcapitypes.McpTargetConfiguration{}
-				if f9f0.Value.ApiGateway != nil {
-					f9f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
-					if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration != nil {
-						f9f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters != nil {
-							f9f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
-							for _, f9f0f0f0f0f0iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolFilters {
-								f9f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
-								if f9f0f0f0f0f0iter.FilterPath != nil {
-									f9f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0iter.FilterPath
-								}
-								if f9f0f0f0f0f0iter.Methods != nil {
-									f9f0f0f0f0f0elemf1 := []*string{}
-									for _, f9f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0iter.Methods {
-										var f9f0f0f0f0f0elemf1elem *string
-										f9f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0elemf1iter))
-										f9f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0elemf1, f9f0f0f0f0f0elemf1elem)
+				switch f9f0.Value.(type) {
+				case *svcsdktypes.McpTargetConfigurationMemberApiGateway:
+					f9f0f0f0 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberApiGateway)
+					if f9f0f0f0 != nil {
+						f9f0f0f0f0 := &svcapitypes.APIGatewayTargetConfiguration{}
+						if f9f0f0f0.Value.ApiGatewayToolConfiguration != nil {
+							f9f0f0f0f0f0 := &svcapitypes.APIGatewayToolConfiguration{}
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters != nil {
+								f9f0f0f0f0f0f0 := []*svcapitypes.APIGatewayToolFilter{}
+								for _, f9f0f0f0f0f0f0iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolFilters {
+									f9f0f0f0f0f0f0elem := &svcapitypes.APIGatewayToolFilter{}
+									if f9f0f0f0f0f0f0iter.FilterPath != nil {
+										f9f0f0f0f0f0f0elem.FilterPath = f9f0f0f0f0f0f0iter.FilterPath
 									}
-									f9f0f0f0f0f0elem.Methods = f9f0f0f0f0f0elemf1
-								}
-								f9f0f0f0f0f0 = append(f9f0f0f0f0f0, f9f0f0f0f0f0elem)
-							}
-							f9f0f0f0f0.ToolFilters = f9f0f0f0f0f0
-						}
-						if f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides != nil {
-							f9f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
-							for _, f9f0f0f0f0f1iter := range f9f0.Value.ApiGateway.ApiGatewayToolConfiguration.ToolOverrides {
-								f9f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
-								if f9f0f0f0f0f1iter.Description != nil {
-									f9f0f0f0f0f1elem.Description = f9f0f0f0f0f1iter.Description
-								}
-								if f9f0f0f0f0f1iter.Method != "" {
-									f9f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f1iter.Method))
-								}
-								if f9f0f0f0f0f1iter.Name != nil {
-									f9f0f0f0f0f1elem.Name = f9f0f0f0f0f1iter.Name
-								}
-								if f9f0f0f0f0f1iter.Path != nil {
-									f9f0f0f0f0f1elem.Path = f9f0f0f0f0f1iter.Path
-								}
-								f9f0f0f0f0f1 = append(f9f0f0f0f0f1, f9f0f0f0f0f1elem)
-							}
-							f9f0f0f0f0.ToolOverrides = f9f0f0f0f0f1
-						}
-						f9f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0
-					}
-					if f9f0.Value.ApiGateway.RestApiId != nil {
-						f9f0f0f0.RestAPIID = f9f0.Value.ApiGateway.RestApiId
-					}
-					if f9f0.Value.ApiGateway.Stage != nil {
-						f9f0f0f0.Stage = f9f0.Value.ApiGateway.Stage
-					}
-					f9f0f0.APIGateway = f9f0f0f0
-				}
-				if f9f0.Value.Lambda != nil {
-					f9f0f0f1 := &svcapitypes.McpLambdaTargetConfiguration{}
-					if f9f0.Value.Lambda.LambdaArn != nil {
-						f9f0f0f1.LambdaARN = f9f0.Value.Lambda.LambdaArn
-					}
-					if f9f0.Value.Lambda.ToolSchema != nil {
-						f9f0f0f1f1 := &svcapitypes.ToolSchema{}
-						switch f9f0.Value.Lambda.ToolSchema.(type) {
-						case *svcsdktypes.ToolSchemaMemberInlinePayload:
-							f9f0f0f1f1f0 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
-							if f9f0f0f1f1f0 != nil {
-								f9f0f0f1f1f0f0 := []*svcapitypes.ToolDefinition{}
-								for _, f9f0f0f1f1f0f0iter := range f9f0f0f1f1f0.Value {
-									f9f0f0f1f1f0f0elem := &svcapitypes.ToolDefinition{}
-									if f9f0f0f1f1f0f0iter.Description != nil {
-										f9f0f0f1f1f0f0elem.Description = f9f0f0f1f1f0f0iter.Description
+									if f9f0f0f0f0f0f0iter.Methods != nil {
+										f9f0f0f0f0f0f0elemf1 := []*string{}
+										for _, f9f0f0f0f0f0f0elemf1iter := range f9f0f0f0f0f0f0iter.Methods {
+											var f9f0f0f0f0f0f0elemf1elem *string
+											f9f0f0f0f0f0f0elemf1elem = aws.String(string(f9f0f0f0f0f0f0elemf1iter))
+											f9f0f0f0f0f0f0elemf1 = append(f9f0f0f0f0f0f0elemf1, f9f0f0f0f0f0f0elemf1elem)
+										}
+										f9f0f0f0f0f0f0elem.Methods = f9f0f0f0f0f0f0elemf1
 									}
-									if f9f0f0f1f1f0f0iter.InputSchema != nil {
-										f9f0f0f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.InputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf1.Description = f9f0f0f1f1f0f0iter.InputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.InputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.InputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f0f0iter.InputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.InputSchema = f9f0f0f1f1f0f0elemf1
-									}
-									if f9f0f0f1f1f0f0iter.Name != nil {
-										f9f0f0f1f1f0f0elem.Name = f9f0f0f1f1f0f0iter.Name
-									}
-									if f9f0f0f1f1f0f0iter.OutputSchema != nil {
-										f9f0f0f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Description != nil {
-											f9f0f0f1f1f0f0elemf3.Description = f9f0f0f1f1f0f0iter.OutputSchema.Description
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Required != nil {
-											f9f0f0f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f0f0iter.OutputSchema.Required)
-										}
-										if f9f0f0f1f1f0f0iter.OutputSchema.Type != "" {
-											f9f0f0f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f0f0iter.OutputSchema.Type))
-										}
-										f9f0f0f1f1f0f0elem.OutputSchema = f9f0f0f1f1f0f0elemf3
-									}
-									f9f0f0f1f1f0f0 = append(f9f0f0f1f1f0f0, f9f0f0f1f1f0f0elem)
+									f9f0f0f0f0f0f0 = append(f9f0f0f0f0f0f0, f9f0f0f0f0f0f0elem)
 								}
-								f9f0f0f1f1.InlinePayload = f9f0f0f1f1f0f0
+								f9f0f0f0f0f0.ToolFilters = f9f0f0f0f0f0f0
 							}
-						case *svcsdktypes.ToolSchemaMemberS3:
-							f9f0f0f1f1f1 := f9f0.Value.Lambda.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
-							if f9f0f0f1f1f1 != nil {
-								f9f0f0f1f1f1f1 := &svcapitypes.S3Configuration{}
-								if f9f0f0f1f1f1.Value.BucketOwnerAccountId != nil {
-									f9f0f0f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1.Value.BucketOwnerAccountId
+							if f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides != nil {
+								f9f0f0f0f0f0f1 := []*svcapitypes.APIGatewayToolOverride{}
+								for _, f9f0f0f0f0f0f1iter := range f9f0f0f0.Value.ApiGatewayToolConfiguration.ToolOverrides {
+									f9f0f0f0f0f0f1elem := &svcapitypes.APIGatewayToolOverride{}
+									if f9f0f0f0f0f0f1iter.Description != nil {
+										f9f0f0f0f0f0f1elem.Description = f9f0f0f0f0f0f1iter.Description
+									}
+									if f9f0f0f0f0f0f1iter.Method != "" {
+										f9f0f0f0f0f0f1elem.Method = aws.String(string(f9f0f0f0f0f0f1iter.Method))
+									}
+									if f9f0f0f0f0f0f1iter.Name != nil {
+										f9f0f0f0f0f0f1elem.Name = f9f0f0f0f0f0f1iter.Name
+									}
+									if f9f0f0f0f0f0f1iter.Path != nil {
+										f9f0f0f0f0f0f1elem.Path = f9f0f0f0f0f0f1iter.Path
+									}
+									f9f0f0f0f0f0f1 = append(f9f0f0f0f0f0f1, f9f0f0f0f0f0f1elem)
 								}
-								if f9f0f0f1f1f1.Value.Uri != nil {
-									f9f0f0f1f1f1f1.URI = f9f0f0f1f1f1.Value.Uri
+								f9f0f0f0f0f0.ToolOverrides = f9f0f0f0f0f0f1
+							}
+							f9f0f0f0f0.APIGatewayToolConfiguration = f9f0f0f0f0f0
+						}
+						if f9f0f0f0.Value.RestApiId != nil {
+							f9f0f0f0f0.RestAPIID = f9f0f0f0.Value.RestApiId
+						}
+						if f9f0f0f0.Value.Stage != nil {
+							f9f0f0f0f0.Stage = f9f0f0f0.Value.Stage
+						}
+						f9f0f0.APIGateway = f9f0f0f0f0
+					}
+				case *svcsdktypes.McpTargetConfigurationMemberLambda:
+					f9f0f0f1 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberLambda)
+					if f9f0f0f1 != nil {
+						f9f0f0f1f1 := &svcapitypes.McpLambdaTargetConfiguration{}
+						if f9f0f0f1.Value.LambdaArn != nil {
+							f9f0f0f1f1.LambdaARN = f9f0f0f1.Value.LambdaArn
+						}
+						if f9f0f0f1.Value.ToolSchema != nil {
+							f9f0f0f1f1f1 := &svcapitypes.ToolSchema{}
+							switch f9f0f0f1.Value.ToolSchema.(type) {
+							case *svcsdktypes.ToolSchemaMemberInlinePayload:
+								f9f0f0f1f1f1f0 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
+								if f9f0f0f1f1f1f0 != nil {
+									f9f0f0f1f1f1f0f0 := []*svcapitypes.ToolDefinition{}
+									for _, f9f0f0f1f1f1f0f0iter := range f9f0f0f1f1f1f0.Value {
+										f9f0f0f1f1f1f0f0elem := &svcapitypes.ToolDefinition{}
+										if f9f0f0f1f1f1f0f0iter.Description != nil {
+											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
+										}
+										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
+										}
+										if f9f0f0f1f1f1f0f0iter.Name != nil {
+											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
+										}
+										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
+											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
+												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
+												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
+											}
+											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
+												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
+											}
+											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
+										}
+										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
+									}
+									f9f0f0f1f1f1.InlinePayload = f9f0f0f1f1f1f0f0
 								}
-								f9f0f0f1f1.S3 = f9f0f0f1f1f1f1
+							case *svcsdktypes.ToolSchemaMemberS3:
+								f9f0f0f1f1f1f1 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
+								if f9f0f0f1f1f1f1 != nil {
+									f9f0f0f1f1f1f1f1 := &svcapitypes.S3Configuration{}
+									if f9f0f0f1f1f1f1.Value.BucketOwnerAccountId != nil {
+										f9f0f0f1f1f1f1f1.BucketOwnerAccountID = f9f0f0f1f1f1f1.Value.BucketOwnerAccountId
+									}
+									if f9f0f0f1f1f1f1.Value.Uri != nil {
+										f9f0f0f1f1f1f1f1.URI = f9f0f0f1f1f1f1.Value.Uri
+									}
+									f9f0f0f1f1f1.S3 = f9f0f0f1f1f1f1f1
+								}
 							}
+							f9f0f0f1f1.ToolSchema = f9f0f0f1f1f1
 						}
-						f9f0f0f1.ToolSchema = f9f0f0f1f1
+						f9f0f0.Lambda = f9f0f0f1f1
 					}
-					f9f0f0.Lambda = f9f0f0f1
-				}
-				if f9f0.Value.McpServer != nil {
-					f9f0f0f2 := &svcapitypes.McpServerTargetConfiguration{}
-					if f9f0.Value.McpServer.Endpoint != nil {
-						f9f0f0f2.Endpoint = f9f0.Value.McpServer.Endpoint
+				case *svcsdktypes.McpTargetConfigurationMemberMcpServer:
+					f9f0f0f2 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberMcpServer)
+					if f9f0f0f2 != nil {
+						f9f0f0f2f2 := &svcapitypes.McpServerTargetConfiguration{}
+						if f9f0f0f2.Value.Endpoint != nil {
+							f9f0f0f2f2.Endpoint = f9f0f0f2.Value.Endpoint
+						}
+						f9f0f0.McpServer = f9f0f0f2f2
 					}
-					f9f0f0.McpServer = f9f0f0f2
-				}
-				if f9f0.Value.OpenApiSchema != nil {
-					f9f0f0f3 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.OpenApiSchema.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f3f0 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f3f0 != nil {
-							f9f0f0f3.InlinePayload = &f9f0f0f3f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f3f1 := f9f0.Value.OpenApiSchema.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f3f1 != nil {
-							f9f0f0f3f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f3f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f3f1f1.BucketOwnerAccountID = f9f0f0f3f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberOpenApiSchema:
+					f9f0f0f3 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberOpenApiSchema)
+					if f9f0f0f3 != nil {
+						f9f0f0f3f3 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f3.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f3f3f0 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f3f3f0 != nil {
+								f9f0f0f3f3.InlinePayload = &f9f0f0f3f3f0.Value
 							}
-							if f9f0f0f3f1.Value.Uri != nil {
-								f9f0f0f3f1f1.URI = f9f0f0f3f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f3f3f1 := f9f0f0f3.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f3f3f1 != nil {
+								f9f0f0f3f3f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f3f3f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f3f3f1f1.BucketOwnerAccountID = f9f0f0f3f3f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f3f3f1.Value.Uri != nil {
+									f9f0f0f3f3f1f1.URI = f9f0f0f3f3f1.Value.Uri
+								}
+								f9f0f0f3f3.S3 = f9f0f0f3f3f1f1
 							}
-							f9f0f0f3.S3 = f9f0f0f3f1f1
 						}
+						f9f0f0.OpenAPISchema = f9f0f0f3f3
 					}
-					f9f0f0.OpenAPISchema = f9f0f0f3
-				}
-				if f9f0.Value.SmithyModel != nil {
-					f9f0f0f4 := &svcapitypes.APISchemaConfiguration{}
-					switch f9f0.Value.SmithyModel.(type) {
-					case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
-						f9f0f0f4f0 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
-						if f9f0f0f4f0 != nil {
-							f9f0f0f4.InlinePayload = &f9f0f0f4f0.Value
-						}
-					case *svcsdktypes.ApiSchemaConfigurationMemberS3:
-						f9f0f0f4f1 := f9f0.Value.SmithyModel.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
-						if f9f0f0f4f1 != nil {
-							f9f0f0f4f1f1 := &svcapitypes.S3Configuration{}
-							if f9f0f0f4f1.Value.BucketOwnerAccountId != nil {
-								f9f0f0f4f1f1.BucketOwnerAccountID = f9f0f0f4f1.Value.BucketOwnerAccountId
+				case *svcsdktypes.McpTargetConfigurationMemberSmithyModel:
+					f9f0f0f4 := f9f0.Value.(*svcsdktypes.McpTargetConfigurationMemberSmithyModel)
+					if f9f0f0f4 != nil {
+						f9f0f0f4f4 := &svcapitypes.APISchemaConfiguration{}
+						switch f9f0f0f4.Value.(type) {
+						case *svcsdktypes.ApiSchemaConfigurationMemberInlinePayload:
+							f9f0f0f4f4f0 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberInlinePayload)
+							if f9f0f0f4f4f0 != nil {
+								f9f0f0f4f4.InlinePayload = &f9f0f0f4f4f0.Value
 							}
-							if f9f0f0f4f1.Value.Uri != nil {
-								f9f0f0f4f1f1.URI = f9f0f0f4f1.Value.Uri
+						case *svcsdktypes.ApiSchemaConfigurationMemberS3:
+							f9f0f0f4f4f1 := f9f0f0f4.Value.(*svcsdktypes.ApiSchemaConfigurationMemberS3)
+							if f9f0f0f4f4f1 != nil {
+								f9f0f0f4f4f1f1 := &svcapitypes.S3Configuration{}
+								if f9f0f0f4f4f1.Value.BucketOwnerAccountId != nil {
+									f9f0f0f4f4f1f1.BucketOwnerAccountID = f9f0f0f4f4f1.Value.BucketOwnerAccountId
+								}
+								if f9f0f0f4f4f1.Value.Uri != nil {
+									f9f0f0f4f4f1f1.URI = f9f0f0f4f4f1.Value.Uri
+								}
+								f9f0f0f4f4.S3 = f9f0f0f4f4f1f1
 							}
-							f9f0f0f4.S3 = f9f0f0f4f1f1
 						}
+						f9f0f0.SmithyModel = f9f0f0f4f4
 					}
-					f9f0f0.SmithyModel = f9f0f0f4
 				}
 				f9.Mcp = f9f0f0
 			}
@@ -1734,7 +1770,7 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f5f0f3 = f5f0f3f1Parent
 					isInterfaceSet = true
 				}
-				f5f0f3Parent.Value = *f5f0f3
+				f5f0f3Parent.Value = f5f0f3
 				f5f0 = f5f0f3Parent
 				isInterfaceSet = true
 			}
@@ -1770,11 +1806,11 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f5f0f4 = f5f0f4f1Parent
 					isInterfaceSet = true
 				}
-				f5f0f4Parent.Value = *f5f0f4
+				f5f0f4Parent.Value = f5f0f4
 				f5f0 = f5f0f4Parent
 				isInterfaceSet = true
 			}
-			f5f0Parent.Value = *f5f0
+			f5f0Parent.Value = f5f0
 			f5 = f5f0Parent
 			isInterfaceSet = true
 		}
@@ -1924,6 +1960,18 @@ func (rm *resourceManager) updateConditions(
 // and if the exception indicates that it is a Terminal exception
 // 'Terminal' exception are specified in generator configuration
 func (rm *resourceManager) terminalAWSError(err error) bool {
-	// No terminal_errors specified for this resource in generator config
-	return false
+	if err == nil {
+		return false
+	}
+
+	var terminalErr smithy.APIError
+	if !errors.As(err, &terminalErr) {
+		return false
+	}
+	switch terminalErr.ErrorCode() {
+	case "ValidationException":
+		return true
+	default:
+		return false
+	}
 }
