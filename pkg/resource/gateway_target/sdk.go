@@ -281,34 +281,8 @@ func (rm *resourceManager) sdkFind(
 										if f9f0f0f1f1f1f0f0iter.Description != nil {
 											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
 										}
-										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
-										}
 										if f9f0f0f1f1f1f0f0iter.Name != nil {
 											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
-										}
-										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
 										}
 										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
 									}
@@ -454,6 +428,9 @@ func (rm *resourceManager) sdkCreate(
 	}()
 	input, err := rm.newCreateRequestPayload(ctx, desired)
 	if err != nil {
+		return nil, err
+	}
+	if err := setSchemaDefinitionsOnCreateInput(desired, input); err != nil {
 		return nil, err
 	}
 
@@ -659,34 +636,8 @@ func (rm *resourceManager) sdkCreate(
 										if f9f0f0f1f1f1f0f0iter.Description != nil {
 											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
 										}
-										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
-										}
 										if f9f0f0f1f1f1f0f0iter.Name != nil {
 											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
-										}
-										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
 										}
 										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
 									}
@@ -977,34 +928,8 @@ func (rm *resourceManager) newCreateRequestPayload(
 							if f6f0f1f1f0iter.Description != nil {
 								f6f0f1f1f0elem.Description = f6f0f1f1f0iter.Description
 							}
-							if f6f0f1f1f0iter.InputSchema != nil {
-								f6f0f1f1f0elemf1 := &svcsdktypes.SchemaDefinition{}
-								if f6f0f1f1f0iter.InputSchema.Description != nil {
-									f6f0f1f1f0elemf1.Description = f6f0f1f1f0iter.InputSchema.Description
-								}
-								if f6f0f1f1f0iter.InputSchema.Required != nil {
-									f6f0f1f1f0elemf1.Required = aws.ToStringSlice(f6f0f1f1f0iter.InputSchema.Required)
-								}
-								if f6f0f1f1f0iter.InputSchema.Type != nil {
-									f6f0f1f1f0elemf1.Type = svcsdktypes.SchemaType(*f6f0f1f1f0iter.InputSchema.Type)
-								}
-								f6f0f1f1f0elem.InputSchema = f6f0f1f1f0elemf1
-							}
 							if f6f0f1f1f0iter.Name != nil {
 								f6f0f1f1f0elem.Name = f6f0f1f1f0iter.Name
-							}
-							if f6f0f1f1f0iter.OutputSchema != nil {
-								f6f0f1f1f0elemf3 := &svcsdktypes.SchemaDefinition{}
-								if f6f0f1f1f0iter.OutputSchema.Description != nil {
-									f6f0f1f1f0elemf3.Description = f6f0f1f1f0iter.OutputSchema.Description
-								}
-								if f6f0f1f1f0iter.OutputSchema.Required != nil {
-									f6f0f1f1f0elemf3.Required = aws.ToStringSlice(f6f0f1f1f0iter.OutputSchema.Required)
-								}
-								if f6f0f1f1f0iter.OutputSchema.Type != nil {
-									f6f0f1f1f0elemf3.Type = svcsdktypes.SchemaType(*f6f0f1f1f0iter.OutputSchema.Type)
-								}
-								f6f0f1f1f0elem.OutputSchema = f6f0f1f1f0elemf3
 							}
 							f6f0f1f1f0 = append(f6f0f1f1f0, *f6f0f1f1f0elem)
 						}
@@ -1144,6 +1069,9 @@ func (rm *resourceManager) sdkUpdate(
 	}()
 	input, err := rm.newUpdateRequestPayload(ctx, desired, delta)
 	if err != nil {
+		return nil, err
+	}
+	if err := setSchemaDefinitionsOnUpdateInput(desired, input); err != nil {
 		return nil, err
 	}
 
@@ -1349,34 +1277,8 @@ func (rm *resourceManager) sdkUpdate(
 										if f9f0f0f1f1f1f0f0iter.Description != nil {
 											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
 										}
-										if f9f0f0f1f1f1f0f0iter.InputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf1 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf1.Description = f9f0f0f1f1f1f0f0iter.InputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf1.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.InputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.InputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf1.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.InputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.InputSchema = f9f0f0f1f1f1f0f0elemf1
-										}
 										if f9f0f0f1f1f1f0f0iter.Name != nil {
 											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
-										}
-										if f9f0f0f1f1f1f0f0iter.OutputSchema != nil {
-											f9f0f0f1f1f1f0f0elemf3 := &svcapitypes.SchemaDefinition{}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Description != nil {
-												f9f0f0f1f1f1f0f0elemf3.Description = f9f0f0f1f1f1f0f0iter.OutputSchema.Description
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Required != nil {
-												f9f0f0f1f1f1f0f0elemf3.Required = aws.StringSlice(f9f0f0f1f1f1f0f0iter.OutputSchema.Required)
-											}
-											if f9f0f0f1f1f1f0f0iter.OutputSchema.Type != "" {
-												f9f0f0f1f1f1f0f0elemf3.Type = aws.String(string(f9f0f0f1f1f1f0f0iter.OutputSchema.Type))
-											}
-											f9f0f0f1f1f1f0f0elem.OutputSchema = f9f0f0f1f1f1f0f0elemf3
 										}
 										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
 									}
@@ -1668,34 +1570,8 @@ func (rm *resourceManager) newUpdateRequestPayload(
 							if f5f0f1f1f0iter.Description != nil {
 								f5f0f1f1f0elem.Description = f5f0f1f1f0iter.Description
 							}
-							if f5f0f1f1f0iter.InputSchema != nil {
-								f5f0f1f1f0elemf1 := &svcsdktypes.SchemaDefinition{}
-								if f5f0f1f1f0iter.InputSchema.Description != nil {
-									f5f0f1f1f0elemf1.Description = f5f0f1f1f0iter.InputSchema.Description
-								}
-								if f5f0f1f1f0iter.InputSchema.Required != nil {
-									f5f0f1f1f0elemf1.Required = aws.ToStringSlice(f5f0f1f1f0iter.InputSchema.Required)
-								}
-								if f5f0f1f1f0iter.InputSchema.Type != nil {
-									f5f0f1f1f0elemf1.Type = svcsdktypes.SchemaType(*f5f0f1f1f0iter.InputSchema.Type)
-								}
-								f5f0f1f1f0elem.InputSchema = f5f0f1f1f0elemf1
-							}
 							if f5f0f1f1f0iter.Name != nil {
 								f5f0f1f1f0elem.Name = f5f0f1f1f0iter.Name
-							}
-							if f5f0f1f1f0iter.OutputSchema != nil {
-								f5f0f1f1f0elemf3 := &svcsdktypes.SchemaDefinition{}
-								if f5f0f1f1f0iter.OutputSchema.Description != nil {
-									f5f0f1f1f0elemf3.Description = f5f0f1f1f0iter.OutputSchema.Description
-								}
-								if f5f0f1f1f0iter.OutputSchema.Required != nil {
-									f5f0f1f1f0elemf3.Required = aws.ToStringSlice(f5f0f1f1f0iter.OutputSchema.Required)
-								}
-								if f5f0f1f1f0iter.OutputSchema.Type != nil {
-									f5f0f1f1f0elemf3.Type = svcsdktypes.SchemaType(*f5f0f1f1f0iter.OutputSchema.Type)
-								}
-								f5f0f1f1f0elem.OutputSchema = f5f0f1f1f0elemf3
 							}
 							f5f0f1f1f0 = append(f5f0f1f1f0, *f5f0f1f1f0elem)
 						}

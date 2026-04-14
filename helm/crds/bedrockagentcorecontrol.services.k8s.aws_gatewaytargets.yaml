@@ -221,35 +221,11 @@ spec:
                                     description:
                                       type: string
                                     inputSchema:
-                                      description: |-
-                                        A schema definition for a gateway target. This structure defines the structure
-                                        of the API that the target exposes.
-                                      properties:
-                                        description:
-                                          type: string
-                                        required:
-                                          items:
-                                            type: string
-                                          type: array
-                                        type:
-                                          type: string
-                                      type: object
+                                      type: string
                                     name:
                                       type: string
                                     outputSchema:
-                                      description: |-
-                                        A schema definition for a gateway target. This structure defines the structure
-                                        of the API that the target exposes.
-                                      properties:
-                                        description:
-                                          type: string
-                                        required:
-                                          items:
-                                            type: string
-                                          type: array
-                                        type:
-                                          type: string
-                                      type: object
+                                      type: string
                                   type: object
                                 type: array
                               s3:

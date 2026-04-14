@@ -29,7 +29,6 @@ const (
 	AgentManagedRuntimeType_PYTHON_3_11 AgentManagedRuntimeType = "PYTHON_3_11"
 	AgentManagedRuntimeType_PYTHON_3_12 AgentManagedRuntimeType = "PYTHON_3_12"
 	AgentManagedRuntimeType_PYTHON_3_13 AgentManagedRuntimeType = "PYTHON_3_13"
-	AgentManagedRuntimeType_PYTHON_3_14 AgentManagedRuntimeType = "PYTHON_3_14"
 )
 
 type AgentRuntimeEndpointStatus_SDK string
@@ -114,19 +113,6 @@ const (
 	CodeInterpreterStatus_DELETE_FAILED CodeInterpreterStatus = "DELETE_FAILED"
 	CodeInterpreterStatus_DELETING      CodeInterpreterStatus = "DELETING"
 	CodeInterpreterStatus_READY         CodeInterpreterStatus = "READY"
-)
-
-type ContentLevel string
-
-const (
-	ContentLevel_FULL_CONTENT  ContentLevel = "FULL_CONTENT"
-	ContentLevel_METADATA_ONLY ContentLevel = "METADATA_ONLY"
-)
-
-type ContentType string
-
-const (
-	ContentType_MEMORY_RECORDS ContentType = "MEMORY_RECORDS"
 )
 
 type CredentialProviderType string
@@ -426,7 +412,6 @@ type ServerProtocol string
 
 const (
 	ServerProtocol_A2A  ServerProtocol = "A2A"
-	ServerProtocol_AGUI ServerProtocol = "AGUI"
 	ServerProtocol_HTTP ServerProtocol = "HTTP"
 	ServerProtocol_MCP  ServerProtocol = "MCP"
 )

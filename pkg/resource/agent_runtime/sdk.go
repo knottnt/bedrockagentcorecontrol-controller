@@ -256,43 +256,43 @@ func (rm *resourceManager) sdkFind(
 		ko.Spec.LifecycleConfiguration = nil
 	}
 	if resp.NetworkConfiguration != nil {
-		f13 := &svcapitypes.NetworkConfiguration{}
+		f12 := &svcapitypes.NetworkConfiguration{}
 		if resp.NetworkConfiguration.NetworkMode != "" {
-			f13.NetworkMode = aws.String(string(resp.NetworkConfiguration.NetworkMode))
+			f12.NetworkMode = aws.String(string(resp.NetworkConfiguration.NetworkMode))
 		}
 		if resp.NetworkConfiguration.NetworkModeConfig != nil {
-			f13f1 := &svcapitypes.VPCConfig{}
+			f12f1 := &svcapitypes.VPCConfig{}
 			if resp.NetworkConfiguration.NetworkModeConfig.SecurityGroups != nil {
-				f13f1.SecurityGroups = aws.StringSlice(resp.NetworkConfiguration.NetworkModeConfig.SecurityGroups)
+				f12f1.SecurityGroups = aws.StringSlice(resp.NetworkConfiguration.NetworkModeConfig.SecurityGroups)
 			}
 			if resp.NetworkConfiguration.NetworkModeConfig.Subnets != nil {
-				f13f1.Subnets = aws.StringSlice(resp.NetworkConfiguration.NetworkModeConfig.Subnets)
+				f12f1.Subnets = aws.StringSlice(resp.NetworkConfiguration.NetworkModeConfig.Subnets)
 			}
-			f13.NetworkModeConfig = f13f1
+			f12.NetworkModeConfig = f12f1
 		}
-		ko.Spec.NetworkConfiguration = f13
+		ko.Spec.NetworkConfiguration = f12
 	} else {
 		ko.Spec.NetworkConfiguration = nil
 	}
 	if resp.ProtocolConfiguration != nil {
-		f14 := &svcapitypes.ProtocolConfiguration{}
+		f13 := &svcapitypes.ProtocolConfiguration{}
 		if resp.ProtocolConfiguration.ServerProtocol != "" {
-			f14.ServerProtocol = aws.String(string(resp.ProtocolConfiguration.ServerProtocol))
+			f13.ServerProtocol = aws.String(string(resp.ProtocolConfiguration.ServerProtocol))
 		}
-		ko.Spec.ProtocolConfiguration = f14
+		ko.Spec.ProtocolConfiguration = f13
 	} else {
 		ko.Spec.ProtocolConfiguration = nil
 	}
 	if resp.RequestHeaderConfiguration != nil {
-		f15 := &svcapitypes.RequestHeaderConfiguration{}
+		f14 := &svcapitypes.RequestHeaderConfiguration{}
 		switch resp.RequestHeaderConfiguration.(type) {
 		case *svcsdktypes.RequestHeaderConfigurationMemberRequestHeaderAllowlist:
-			f15f0 := resp.RequestHeaderConfiguration.(*svcsdktypes.RequestHeaderConfigurationMemberRequestHeaderAllowlist)
-			if f15f0 != nil {
-				f15.RequestHeaderAllowlist = aws.StringSlice(f15f0.Value)
+			f14f0 := resp.RequestHeaderConfiguration.(*svcsdktypes.RequestHeaderConfigurationMemberRequestHeaderAllowlist)
+			if f14f0 != nil {
+				f14.RequestHeaderAllowlist = aws.StringSlice(f14f0.Value)
 			}
 		}
-		ko.Spec.RequestHeaderConfiguration = f15
+		ko.Spec.RequestHeaderConfiguration = f14
 	} else {
 		ko.Spec.RequestHeaderConfiguration = nil
 	}
@@ -307,11 +307,11 @@ func (rm *resourceManager) sdkFind(
 		ko.Status.Status = nil
 	}
 	if resp.WorkloadIdentityDetails != nil {
-		f18 := &svcapitypes.WorkloadIdentityDetails{}
+		f17 := &svcapitypes.WorkloadIdentityDetails{}
 		if resp.WorkloadIdentityDetails.WorkloadIdentityArn != nil {
-			f18.WorkloadIdentityARN = resp.WorkloadIdentityDetails.WorkloadIdentityArn
+			f17.WorkloadIdentityARN = resp.WorkloadIdentityDetails.WorkloadIdentityArn
 		}
-		ko.Status.WorkloadIdentityDetails = f18
+		ko.Status.WorkloadIdentityDetails = f17
 	} else {
 		ko.Status.WorkloadIdentityDetails = nil
 	}
@@ -893,44 +893,44 @@ func (rm *resourceManager) newUpdateRequestPayload(
 		res.LifecycleConfiguration = f6
 	}
 	if r.ko.Spec.NetworkConfiguration != nil {
-		f8 := &svcsdktypes.NetworkConfiguration{}
+		f7 := &svcsdktypes.NetworkConfiguration{}
 		if r.ko.Spec.NetworkConfiguration.NetworkMode != nil {
-			f8.NetworkMode = svcsdktypes.NetworkMode(*r.ko.Spec.NetworkConfiguration.NetworkMode)
+			f7.NetworkMode = svcsdktypes.NetworkMode(*r.ko.Spec.NetworkConfiguration.NetworkMode)
 		}
 		if r.ko.Spec.NetworkConfiguration.NetworkModeConfig != nil {
-			f8f1 := &svcsdktypes.VpcConfig{}
+			f7f1 := &svcsdktypes.VpcConfig{}
 			if r.ko.Spec.NetworkConfiguration.NetworkModeConfig.SecurityGroups != nil {
-				f8f1.SecurityGroups = aws.ToStringSlice(r.ko.Spec.NetworkConfiguration.NetworkModeConfig.SecurityGroups)
+				f7f1.SecurityGroups = aws.ToStringSlice(r.ko.Spec.NetworkConfiguration.NetworkModeConfig.SecurityGroups)
 			}
 			if r.ko.Spec.NetworkConfiguration.NetworkModeConfig.Subnets != nil {
-				f8f1.Subnets = aws.ToStringSlice(r.ko.Spec.NetworkConfiguration.NetworkModeConfig.Subnets)
+				f7f1.Subnets = aws.ToStringSlice(r.ko.Spec.NetworkConfiguration.NetworkModeConfig.Subnets)
 			}
-			f8.NetworkModeConfig = f8f1
+			f7.NetworkModeConfig = f7f1
 		}
-		res.NetworkConfiguration = f8
+		res.NetworkConfiguration = f7
 	}
 	if r.ko.Spec.ProtocolConfiguration != nil {
-		f9 := &svcsdktypes.ProtocolConfiguration{}
+		f8 := &svcsdktypes.ProtocolConfiguration{}
 		if r.ko.Spec.ProtocolConfiguration.ServerProtocol != nil {
-			f9.ServerProtocol = svcsdktypes.ServerProtocol(*r.ko.Spec.ProtocolConfiguration.ServerProtocol)
+			f8.ServerProtocol = svcsdktypes.ServerProtocol(*r.ko.Spec.ProtocolConfiguration.ServerProtocol)
 		}
-		res.ProtocolConfiguration = f9
+		res.ProtocolConfiguration = f8
 	}
 	if r.ko.Spec.RequestHeaderConfiguration != nil {
-		var f10 svcsdktypes.RequestHeaderConfiguration
+		var f9 svcsdktypes.RequestHeaderConfiguration
 		isInterfaceSet := false
 		if r.ko.Spec.RequestHeaderConfiguration.RequestHeaderAllowlist != nil {
 			if isInterfaceSet {
 				return nil, ackerr.NewTerminalError(fmt.Errorf("can only set one of the members for RequestHeaderAllowlist"))
 			}
-			f10f0Parent := &svcsdktypes.RequestHeaderConfigurationMemberRequestHeaderAllowlist{}
-			f10f0 := []string{}
-			f10f0 = aws.ToStringSlice(r.ko.Spec.RequestHeaderConfiguration.RequestHeaderAllowlist)
-			f10f0Parent.Value = f10f0
-			f10 = f10f0Parent
+			f9f0Parent := &svcsdktypes.RequestHeaderConfigurationMemberRequestHeaderAllowlist{}
+			f9f0 := []string{}
+			f9f0 = aws.ToStringSlice(r.ko.Spec.RequestHeaderConfiguration.RequestHeaderAllowlist)
+			f9f0Parent.Value = f9f0
+			f9 = f9f0Parent
 			isInterfaceSet = true
 		}
-		res.RequestHeaderConfiguration = f10
+		res.RequestHeaderConfiguration = f9
 	}
 	if r.ko.Spec.RoleARN != nil {
 		res.RoleArn = r.ko.Spec.RoleARN

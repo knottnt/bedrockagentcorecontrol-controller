@@ -19,14 +19,12 @@ ignore:
     - Policy
     - PolicyEngine
   field_paths:
-    # SchemaDefinition shape used by InputSchema recursively references itself.
-   # - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
-    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Items
-    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Properties
-    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Items
-    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Properties
-    - TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
-    - CreateGatewayTargetOutput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
+    # SchemaDefinition shape used by InputSchema/OutputSchema recursively
+    # references itself via Items and Properties. We ignore the entire
+    # InputSchema and OutputSchema fields and re-add them as string fields
+    # that accept JSON, so users can represent the full recursive schema.
+    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.ToolDefinition.InputSchema
+    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.ToolDefinition.OutputSchema
     - CreateAgentRuntimeInput.ClientToken
     - CreateAgentRuntimeEndpointInput.ClientToken
     - CreateGatewayInput.ClientToken
@@ -145,10 +143,31 @@ resources:
         references:
           resource: Gateway
           path: Status.GatewayID
-      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Type:
-        go_tag: json:"type,omitempty"
-      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Type:
-        go_tag: json:"type,omitempty"
+      # InputSchema and OutputSchema use the recursive SchemaDefinition type
+      # which can't be directly represented in a CRD. We accept them as JSON
+      # strings and marshal/unmarshal in hooks.
+      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema:
+        type: "string"
+        compare:
+          is_ignored: true
+        set:
+          - method: Create
+            ignore: all
+          - method: Update
+            ignore: all
+          - method: ReadOne
+            ignore: all
+      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema:
+        type: "string"
+        compare:
+          is_ignored: true
+        set:
+          - method: Create
+            ignore: all
+          - method: Update
+            ignore: all
+          - method: ReadOne
+            ignore: all
     tags:
       ignore: true
     synced:
@@ -156,6 +175,11 @@ resources:
         - path: Status.Status
           in:
             - READY
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/gateway_target/sdk_create_post_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/gateway_target/sdk_update_post_build_request.go.tpl
     exceptions:
       errors:
         404:
