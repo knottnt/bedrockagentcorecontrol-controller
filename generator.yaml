@@ -20,9 +20,11 @@ ignore:
     - PolicyEngine
   field_paths:
     # SchemaDefinition shape used by InputSchema recursively references itself.
-    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
+   # - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
     - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Items
     - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Properties
+    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Items
+    - CreateGatewayTargetInput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Properties
     - TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
     - CreateGatewayTargetOutput.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema
     - CreateAgentRuntimeInput.ClientToken
@@ -143,6 +145,10 @@ resources:
         references:
           resource: Gateway
           path: Status.GatewayID
+      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema.Type:
+        go_tag: json:"type,omitempty"
+      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema.Type:
+        go_tag: json:"type,omitempty"
     tags:
       ignore: true
     synced:

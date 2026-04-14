@@ -231,7 +231,7 @@ spec:
                                           items:
                                             type: string
                                           type: array
-                                        type_:
+                                        type:
                                           type: string
                                       type: object
                                     name:
@@ -247,7 +247,7 @@ spec:
                                           items:
                                             type: string
                                           type: array
-                                        type_:
+                                        type:
                                           type: string
                                       type: object
                                   type: object
