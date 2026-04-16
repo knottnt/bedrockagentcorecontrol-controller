@@ -1,0 +1,13 @@
+apiVersion: bedrockagentcorecontrol.services.k8s.aws/v1alpha1
+kind: GatewayTarget
+metadata:
+  name: $GATEWAY_TARGET_NAME
+  namespace: default
+spec:
+  name: $GATEWAY_TARGET_NAME
+  description: "ACK e2e test gateway target"
+  gatewayIdentifier: $GATEWAY_ID
+  targetConfiguration:
+    mcp:
+      smithyModel:
+        inlinePayload: $SMITHY_MODEL_PAYLOAD

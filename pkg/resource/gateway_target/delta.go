@@ -42,6 +42,8 @@ func newResourceDelta(
 		return delta
 	}
 
+	compareInlinePayloadToolDefinitions(delta, a, b)
+
 	if len(a.ko.Spec.CredentialProviderConfigurations) != len(b.ko.Spec.CredentialProviderConfigurations) {
 		delta.Add("Spec.CredentialProviderConfigurations", a.ko.Spec.CredentialProviderConfigurations, b.ko.Spec.CredentialProviderConfigurations)
 	} else if len(a.ko.Spec.CredentialProviderConfigurations) > 0 {
@@ -153,13 +155,6 @@ func newResourceDelta(
 				if ackcompare.HasNilDifference(a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema) {
 					delta.Add("Spec.TargetConfiguration.Mcp.Lambda.ToolSchema", a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema)
 				} else if a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema != nil && b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema != nil {
-					if len(a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload) != len(b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload) {
-						delta.Add("Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload", a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload)
-					} else if len(a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload) > 0 {
-						if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload) {
-							delta.Add("Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload", a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload)
-						}
-					}
 					if ackcompare.HasNilDifference(a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3) {
 						delta.Add("Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3", a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3, b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3)
 					} else if a.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3 != nil && b.ko.Spec.TargetConfiguration.Mcp.Lambda.ToolSchema.S3 != nil {

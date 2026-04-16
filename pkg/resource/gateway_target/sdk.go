@@ -384,6 +384,11 @@ func (rm *resourceManager) sdkFind(
 	}
 
 	rm.setStatusDefaults(ko)
+
+	if err := setSchemaDefinitionsFromSDKResponse(ko, resp); err != nil {
+		return nil, err
+	}
+
 	return &resource{ko}, nil
 }
 
@@ -627,22 +632,6 @@ func (rm *resourceManager) sdkCreate(
 						if f9f0f0f1.Value.ToolSchema != nil {
 							f9f0f0f1f1f1 := &svcapitypes.ToolSchema{}
 							switch f9f0f0f1.Value.ToolSchema.(type) {
-							case *svcsdktypes.ToolSchemaMemberInlinePayload:
-								f9f0f0f1f1f1f0 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
-								if f9f0f0f1f1f1f0 != nil {
-									f9f0f0f1f1f1f0f0 := []*svcapitypes.ToolDefinition{}
-									for _, f9f0f0f1f1f1f0f0iter := range f9f0f0f1f1f1f0.Value {
-										f9f0f0f1f1f1f0f0elem := &svcapitypes.ToolDefinition{}
-										if f9f0f0f1f1f1f0f0iter.Description != nil {
-											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
-										}
-										if f9f0f0f1f1f1f0f0iter.Name != nil {
-											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
-										}
-										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
-									}
-									f9f0f0f1f1f1.InlinePayload = f9f0f0f1f1f1f0f0
-								}
 							case *svcsdktypes.ToolSchemaMemberS3:
 								f9f0f0f1f1f1f1 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
 								if f9f0f0f1f1f1f1 != nil {
@@ -1268,22 +1257,6 @@ func (rm *resourceManager) sdkUpdate(
 						if f9f0f0f1.Value.ToolSchema != nil {
 							f9f0f0f1f1f1 := &svcapitypes.ToolSchema{}
 							switch f9f0f0f1.Value.ToolSchema.(type) {
-							case *svcsdktypes.ToolSchemaMemberInlinePayload:
-								f9f0f0f1f1f1f0 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberInlinePayload)
-								if f9f0f0f1f1f1f0 != nil {
-									f9f0f0f1f1f1f0f0 := []*svcapitypes.ToolDefinition{}
-									for _, f9f0f0f1f1f1f0f0iter := range f9f0f0f1f1f1f0.Value {
-										f9f0f0f1f1f1f0f0elem := &svcapitypes.ToolDefinition{}
-										if f9f0f0f1f1f1f0f0iter.Description != nil {
-											f9f0f0f1f1f1f0f0elem.Description = f9f0f0f1f1f1f0f0iter.Description
-										}
-										if f9f0f0f1f1f1f0f0iter.Name != nil {
-											f9f0f0f1f1f1f0f0elem.Name = f9f0f0f1f1f1f0f0iter.Name
-										}
-										f9f0f0f1f1f1f0f0 = append(f9f0f0f1f1f1f0f0, f9f0f0f1f1f1f0f0elem)
-									}
-									f9f0f0f1f1f1.InlinePayload = f9f0f0f1f1f1f0f0
-								}
 							case *svcsdktypes.ToolSchemaMemberS3:
 								f9f0f0f1f1f1f1 := f9f0f0f1.Value.ToolSchema.(*svcsdktypes.ToolSchemaMemberS3)
 								if f9f0f0f1f1f1f1 != nil {

@@ -394,7 +394,7 @@ spec:
                   Regex Pattern: `^[0-9a-zA-Z]{10}$`
                 type: string
               updatedAt:
-                description: The timestamp when the target was last updated.
+                description: The timestamp when the gateway target was last updated.
                 format: date-time
                 type: string
             type: object

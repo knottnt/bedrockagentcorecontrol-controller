@@ -139,22 +139,51 @@ resources:
     fields:
       TargetId:
         is_primary_key: true
+
       GatewayIdentifier:
         references:
           resource: Gateway
           path: Status.GatewayID
+
+      LastSynchronizedAt:
+        is_read_only: true
+        from:
+          operation: GetGatewayTarget
+          path: LastSynchronizedAt
+
+      UpdatedAt:
+        is_read_only: true
+        from:
+          operation: GetGatewayTarget
+          path: UpdatedAt
+      
       TargetConfiguration.Mcp.ApiGateway.RestApiId:
         references:
-          resource: RestApi
+          resource: RestAPI
           service_name: apigateway
           path: Status.ID
+      
+      TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload:
+        # explictly don't update this value from API response to avoid
+        # tool definitions from erroneously having InputSchema and OutputSchema removed.
+        set:
+          - method: Create
+            ignore: from
+          - method: Update
+            ignore: from
+            
+        # The InlinePayload slice contains ToolDefinition elements whose
+        # InputSchema and OutputSchema fields are JSON strings representing
+        # recursive SchemaDefinition objects. We ignore the entire slice in
+        # the generated delta comparison and handle it in a delta_pre_compare
+        # hook that normalizes JSON before comparing.
+        compare:
+          is_ignored: true
       # InputSchema and OutputSchema use the recursive SchemaDefinition type
       # which can't be directly represented in a CRD. We accept them as JSON
       # strings and marshal/unmarshal in hooks.
       TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.InputSchema:
         type: "string"
-        compare:
-          is_ignored: true
         set:
           - method: Create
             ignore: all
@@ -164,8 +193,6 @@ resources:
             ignore: all
       TargetConfiguration.Mcp.Lambda.ToolSchema.InlinePayload.OutputSchema:
         type: "string"
-        compare:
-          is_ignored: true
         set:
           - method: Create
             ignore: all
@@ -173,6 +200,9 @@ resources:
             ignore: all
           - method: ReadOne
             ignore: all
+
+    # https://docs.aws.amazon.com/bedrock-agentcore-control/latest/APIReference/API_TagResource.html
+    # Tags not supported for GatewayTargets
     tags:
       ignore: true
     synced:
@@ -181,10 +211,14 @@ resources:
           in:
             - READY
     hooks:
+      delta_pre_compare:
+        template_path: hooks/gateway_target/delta_pre_compare.go.tpl
       sdk_create_post_build_request:
         template_path: hooks/gateway_target/sdk_create_post_build_request.go.tpl
       sdk_update_post_build_request:
         template_path: hooks/gateway_target/sdk_update_post_build_request.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/gateway_target/sdk_read_one_post_set_output.go.tpl
     exceptions:
       errors:
         404:

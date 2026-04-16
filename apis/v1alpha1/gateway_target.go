@@ -84,7 +84,7 @@ type GatewayTargetStatus struct {
 	// Regex Pattern: `^[0-9a-zA-Z]{10}$`
 	// +kubebuilder:validation:Optional
 	TargetID *string `json:"targetID,omitempty"`
-	// The timestamp when the target was last updated.
+	// The timestamp when the gateway target was last updated.
 	// +kubebuilder:validation:Optional
 	UpdatedAt *metav1.Time `json:"updatedAt,omitempty"`
 }

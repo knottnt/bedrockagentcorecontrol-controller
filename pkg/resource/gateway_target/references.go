@@ -217,8 +217,8 @@ func (rm *resourceManager) resolveReferenceForTargetConfiguration_Mcp_APIGateway
 					if arr.Namespace != nil && *arr.Namespace != "" {
 						namespace = *arr.Namespace
 					}
-					obj := &apigatewayapitypes.RestApi{}
-					if err := getReferencedResourceState_RestApi(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
+					obj := &apigatewayapitypes.RestAPI{}
+					if err := getReferencedResourceState_RestAPI(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
 						return hasReferences, err
 					}
 					ko.Spec.TargetConfiguration.Mcp.APIGateway.RestAPIID = (*string)(obj.Status.ID)
@@ -230,14 +230,14 @@ func (rm *resourceManager) resolveReferenceForTargetConfiguration_Mcp_APIGateway
 	return hasReferences, nil
 }
 
-// getReferencedResourceState_RestApi looks up whether a referenced resource
+// getReferencedResourceState_RestAPI looks up whether a referenced resource
 // exists and is in a ACK.ResourceSynced=True state. If the referenced resource does exist and is
 // in a Synced state, returns nil, otherwise returns `ackerr.ResourceReferenceTerminalFor` or
 // `ResourceReferenceNotSyncedFor` depending on if the resource is in a Terminal state.
-func getReferencedResourceState_RestApi(
+func getReferencedResourceState_RestAPI(
 	ctx context.Context,
 	apiReader client.Reader,
-	obj *apigatewayapitypes.RestApi,
+	obj *apigatewayapitypes.RestAPI,
 	name string, // the Kubernetes name of the referenced resource
 	namespace string, // the Kubernetes namespace of the referenced resource
 ) error {
@@ -254,13 +254,13 @@ func getReferencedResourceState_RestApi(
 		if cond.Type == ackv1alpha1.ConditionTypeTerminal &&
 			cond.Status == corev1.ConditionTrue {
 			return ackerr.ResourceReferenceTerminalFor(
-				"RestApi",
+				"RestAPI",
 				namespace, name)
 		}
 	}
 	if refResourceTerminal {
 		return ackerr.ResourceReferenceTerminalFor(
-			"RestApi",
+			"RestAPI",
 			namespace, name)
 	}
 	var refResourceSynced bool
@@ -272,12 +272,12 @@ func getReferencedResourceState_RestApi(
 	}
 	if !refResourceSynced {
 		return ackerr.ResourceReferenceNotSyncedFor(
-			"RestApi",
+			"RestAPI",
 			namespace, name)
 	}
 	if obj.Status.ID == nil {
 		return ackerr.ResourceReferenceMissingTargetFieldFor(
-			"RestApi",
+			"RestAPI",
 			namespace, name,
 			"Status.ID")
 	}
