@@ -404,16 +404,16 @@ const (
 	HarnessOpenAiAPIFormat_responses        HarnessOpenAiAPIFormat = "responses"
 )
 
-type HarnessStatus string
+type HarnessStatus_SDK string
 
 const (
-	HarnessStatus_CREATE_FAILED HarnessStatus = "CREATE_FAILED"
-	HarnessStatus_CREATING      HarnessStatus = "CREATING"
-	HarnessStatus_DELETE_FAILED HarnessStatus = "DELETE_FAILED"
-	HarnessStatus_DELETING      HarnessStatus = "DELETING"
-	HarnessStatus_READY         HarnessStatus = "READY"
-	HarnessStatus_UPDATE_FAILED HarnessStatus = "UPDATE_FAILED"
-	HarnessStatus_UPDATING      HarnessStatus = "UPDATING"
+	HarnessStatus_SDK_CREATE_FAILED HarnessStatus_SDK = "CREATE_FAILED"
+	HarnessStatus_SDK_CREATING      HarnessStatus_SDK = "CREATING"
+	HarnessStatus_SDK_DELETE_FAILED HarnessStatus_SDK = "DELETE_FAILED"
+	HarnessStatus_SDK_DELETING      HarnessStatus_SDK = "DELETING"
+	HarnessStatus_SDK_READY         HarnessStatus_SDK = "READY"
+	HarnessStatus_SDK_UPDATE_FAILED HarnessStatus_SDK = "UPDATE_FAILED"
+	HarnessStatus_SDK_UPDATING      HarnessStatus_SDK = "UPDATING"
 )
 
 type HarnessToolType string

@@ -21,7 +21,6 @@ ignore:
     - Dataset
     - DatasetVersion
     - GatewayRule
-    - Harness
     - HarnessEndpoint
     - PaymentConnector
     - PaymentCredentialProvider
@@ -140,9 +139,32 @@ ignore:
     - UserPreferenceMemoryStrategyInput_.MemoryRecordSchema
     # Policy
     - PolicyDefinition.Policy
+    # Harness: document.Interface (JSON document) fields are not representable
+    # in a CRD and cause code-gen to panic ("Unsupported shape type: document").
+    # Ignore them, rooted at the owning structure shape so they're removed from
+    # every operation that reuses the shape.
+    - HarnessInlineFunctionConfig.InputSchema
+    - HarnessBedrockModelConfig.AdditionalParams
+    - HarnessLiteLlmModelConfig.AdditionalParams
+    - HarnessOpenAiModelConfig.AdditionalParams
+    # Harness: HarnessManagedMemoryConfiguration.Arn is the ARN of the managed
+    # AgentCore Memory resource that AWS auto-provisions. The SDK model documents
+    # it as "Read-only on Get, ignored on Create/Update input" — the user can
+    # never set it, so it is pure output noise. Rather than leaving it in the spec
+    # as an ignored-in-delta field (misleading, and hard to remove later), we
+    # exclude it entirely, rooted at the owning structure shape so it is removed
+    # from every operation that reuses HarnessManagedMemoryConfiguration.
+    - HarnessManagedMemoryConfiguration.Arn
 
 sdk_names:
   model_name: bedrock-agentcore-control
+
+# The Unit shape is an empty structure used as a union member marker (e.g.
+# Harness tool/skill union "enabled" flags). It has no fields and must be
+# declared as an empty shape so code-gen can represent it.
+empty_shapes:
+  - Unit
+  - HarnessDisabledMemoryConfiguration
 
 operations:
   CreateMemory:
@@ -151,6 +173,12 @@ operations:
     output_wrapper_field_path: Memory
   UpdateMemory:
     output_wrapper_field_path: Memory
+  CreateHarness:
+    output_wrapper_field_path: Harness
+  GetHarness:
+    output_wrapper_field_path: Harness
+  UpdateHarness:
+    output_wrapper_field_path: Harness
 
 resources:
   AgentRuntime:
@@ -892,3 +920,108 @@ resources:
           code: ResourceNotFoundException
       terminal_codes:
         - ValidationException
+
+  Harness:
+    ignore_idempotency_token: true
+    renames:
+      operations:
+        CreateHarness:
+          input_fields:
+            HarnessName: Name
+          output_fields:
+            HarnessName: Name
+            HarnessId: ID
+        GetHarness:
+          input_fields:
+            HarnessId: ID
+          output_fields:
+            HarnessName: Name
+        UpdateHarness:
+          input_fields:
+            HarnessId: ID
+          output_fields:
+            HarnessName: Name
+        DeleteHarness:
+          input_fields:
+            HarnessId: ID
+    fields:
+      ID:
+        is_primary_key: true
+      Name:
+        is_immutable: true
+      ExecutionRoleArn:
+        references:
+          resource: Role
+          service_name: iam
+          path: Status.ACKResourceMetadata.ARN
+      # These three fields are modeled from the Create input shapes (bare union
+      # types), but UpdateHarnessInput wraps them in Updated* PATCH-wrapper
+      # types with a single OptionalValue member. Suppress the generated
+      # update-set (which would emit mismatched assignments) and populate them
+      # in sdk_update_post_build_request via the OptionalValue wrapper.
+      AuthorizerConfiguration:
+        set:
+          - method: Update
+            ignore: all
+      EnvironmentArtifact:
+        set:
+          - method: Update
+            ignore: all
+      Memory:
+        set:
+          - method: Update
+            ignore: all
+      HarnessVersion:
+        is_read_only: true
+        from:
+          operation: GetHarness
+          path: Harness.HarnessVersion
+      FailureReason:
+        is_read_only: true
+        from:
+          operation: GetHarness
+          path: Harness.FailureReason
+      CreatedAt:
+        is_read_only: true
+        from:
+          operation: GetHarness
+          path: Harness.CreatedAt
+      UpdatedAt:
+        is_read_only: true
+        from:
+          operation: GetHarness
+          path: Harness.UpdatedAt
+    synced:
+      when:
+        - path: Status.Status
+          in:
+            - READY
+            - CREATE_FAILED
+            - UPDATE_FAILED
+            - DELETE_FAILED
+    updateable:
+      when:
+        - path: Status.Status
+          in:
+            - READY
+    deletable:
+      when:
+        - path: Status.Status
+          in:
+            - READY
+            - CREATE_FAILED
+            - UPDATE_FAILED
+            - DELETE_FAILED
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+      terminal_codes:
+        - ValidationException
+    hooks:
+      sdk_read_one_post_set_output:
+        template_path: hooks/harness/sdk_read_one_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/harness/sdk_update_pre_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/harness/sdk_update_post_build_request.go.tpl

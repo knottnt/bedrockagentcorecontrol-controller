@@ -1,0 +1,13 @@
+apiVersion: bedrockagentcorecontrol.services.k8s.aws/v1alpha1
+kind: Harness
+metadata:
+  name: $HARNESS_NAME
+  namespace: default
+spec:
+  name: $HARNESS_SPEC_NAME
+  executionRoleARN: $ROLE_ARN
+  maxIterations: 10
+  timeoutSeconds: 300
+  model:
+    bedrockModelConfig:
+      modelID: "anthropic.claude-3-haiku-20240307-v1:0"

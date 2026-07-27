@@ -24,6 +24,7 @@ rules:
   - codeinterpreters
   - gateways
   - gatewaytargets
+  - harnesses
   - memories
   - policies
   - policyengines
@@ -47,6 +48,7 @@ rules:
   - codeinterpreters
   - gateways
   - gatewaytargets
+  - harnesses
   - memories
   - policies
   - policyengines
